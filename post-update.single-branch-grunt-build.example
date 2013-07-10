@@ -4,9 +4,10 @@
 # Workflow" by Joe Maller http://joemaller.com/990/a-web-focused-git-workflow/
 #
 # Dependencies:
-# - node + npm (obviously)
+# - node + npm
 # - yo installed globally   (npm install -g yo)
-# - compass                 (gem install compass)
+# - any other binaries / libs that your grunt tasks require and aren't listed
+#   as dependencies in package.json
 
 echo
 echo "**** Pulling changes into live site ****"
