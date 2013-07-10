@@ -1,0 +1,53 @@
+#!/bin/sh
+
+# an example server side hook for automating builds from: "A Web-focused Git
+# Workflow" by Joe Maller http://joemaller.com/990/a-web-focused-git-workflow/
+#
+# Dependencies:
+# - node + npm (obviously)
+# - yo installed globally   (npm install -g yo)
+# - compass                 (gem install compass)
+
+# figure out the branch name that was pushed to
+branch=$(git rev-parse --symbolic --abbrev-ref $1)
+
+
+
+if [ "$branch" = "staging" ]; then
+  echo
+  echo "**** Pulling changes into staging site ****"
+  echo
+
+  cd /path/to/staging/site || exit
+  unset GIT_DIR
+  git reset --hard
+
+  # assuming staging branch is called "staging" and is on remote "origin"
+  git pull origin staging
+else
+  echo
+  echo "**** Pulling changes into live site ****"
+  echo
+
+  cd /path/to/production/site || exit
+  unset GIT_DIR
+  git reset --hard
+
+  # assuming production branch is called "master" and is on remote "origin"
+  git pull origin master
+fi
+
+echo
+echo "**** Installing dependencies ****"
+echo
+
+npm install
+
+echo
+echo "**** Building ****"
+echo
+
+grunt build
+
+
+exec git-update-server-info

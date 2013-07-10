@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# an example server side hook for automating builds from: "A Web-focused Git
+# Workflow" by Joe Maller http://joemaller.com/990/a-web-focused-git-workflow/
+#
+# Dependencies:
+# - node + npm (obviously)
+# - yo installed globally   (npm install -g yo)
+# - compass                 (gem install compass)
+
+echo
+echo "**** Pulling changes into live site ****"
+echo
+
+cd /path/to/site || exit
+unset GIT_DIR
+git reset --hard
+
+# assuming you want to pull from origin/master
+git pull origin master
+
+echo
+echo "**** Installing dependencies ****"
+echo
+
+npm install
+
+echo
+echo "**** Building ****"
+echo
+
+grunt build
+
+
+exec git-update-server-info
